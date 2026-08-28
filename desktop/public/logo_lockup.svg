@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160" width="100%" height="100%">
+  <defs>
+    <!-- Facet Gradients for Pure Symbol -->
+    <linearGradient id="facetTopLock" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="60%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+
+    <linearGradient id="facetLeftLock" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F1F5F9"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+
+    <linearGradient id="cyanWingLock" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="50%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+
+    <linearGradient id="laserBeamLock" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+
+    <filter id="symbolGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0284C7" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Left: Aero Origami Glider Symbol (Optically Centered at Y=80) -->
+  <g filter="url(#symbolGlow)" transform="translate(80, 80) scale(0.33) rotate(-14) translate(-256, -256)">
+    <!-- Right Folded Wing -->
+    <path d="M256 96 L410 330 C424 352 408 380 382 376 L256 320 Z" fill="url(#cyanWingLock)"/>
+    <!-- Left Wing Facet -->
+    <path d="M256 96 L256 320 L130 376 C104 380 88 352 102 330 Z" fill="url(#facetLeftLock)"/>
+    <!-- Top Body Spine Facet -->
+    <path d="M256 96 L330 320 C336 338 322 354 304 350 L256 338 L208 350 C190 354 176 338 182 320 Z" fill="url(#facetTopLock)"/>
+    <!-- Laser Pointer Beacon -->
+    <circle cx="256" cy="94" r="14" fill="url(#laserBeamLock)"/>
+    <circle cx="256" cy="94" r="30" fill="#34D399" opacity="0.45"/>
+  </g>
+
+  <!-- Right: Perfectly Scaled Wordmark with Cyan Dot & Gray Subtitle -->
+  <g transform="translate(172, 0)">
+    <!-- Brand Title: Glide. (Size 64px, White + Cyan Dot) -->
+    <text x="0" y="80" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#FFFFFF" letter-spacing="-0.03em">
+      Glide<tspan fill="#38BDF8">.</tspan>
+    </text>
+    
+    <!-- Subtitle: Muted Gray (Size 14px, #94A3B8) -->
+    <text x="2" y="108" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#94A3B8" letter-spacing="0.14em">
+      OFFLINE PRESENTATION REMOTE
+    </text>
+  </g>
+</svg>

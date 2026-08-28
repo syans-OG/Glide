@@ -1,0 +1,36 @@
+# Agents / AI configs (Strictly excluded)
+.agents/
+.gemini/
+
+# Node / JS Dependencies & Build
+node_modules/
+dist/
+desktop/node_modules/
+desktop/dist/
+
+# Rust / Tauri Build Artifacts
+target/
+desktop/src-tauri/target/
+
+# Flutter / Mobile Build Artifacts & Temporary files
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+mobile/build/
+mobile/.dart_tool/
+mobile/.flutter-plugins-dependencies
+mobile/flutter_*.png
+
+# IDE & OS files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log

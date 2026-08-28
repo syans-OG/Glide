@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glide — Presentation Remote</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="/logo_official.svg" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header Bar & Drag Region -->
+    <header class="header-bar" data-tauri-drag-region>
+      <div class="brand-badge" data-tauri-drag-region>
+        <img class="brand-icon-svg" src="/logo_official.svg" alt="Glide Logo" width="22" height="22" />
+        <span class="brand-name">Glide</span>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">
+          <svg id="theme-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        <button id="win-minimize" class="win-control-btn" title="Minimize">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+        <button id="win-close" class="win-control-btn win-close-btn" title="Close">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Card Body -->
+    <main class="main-card">
+      <!-- Status Indicator Pill -->
+      <div class="status-pill">
+        <span id="status-dot" class="status-dot"></span>
+        <span id="status-text">Menunggu HP terhubung...</span>
+      </div>
+
+      <!-- Segmented Control Mode Tabs -->
+      <div class="mode-tabs">
+        <button id="tab-wifi" class="tab-btn active">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+          </svg>
+          <span>Wi-Fi / QR</span>
+        </button>
+        <button id="tab-bluetooth" class="tab-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"></polyline>
+          </svg>
+          <span>Bluetooth</span>
+        </button>
+      </div>
+
+      <!-- Tab Panel: Wi-Fi -->
+      <div id="panel-wifi" class="tab-panel active">
+        <div class="qr-frame">
+          <canvas id="qrcode-canvas" width="172" height="172"></canvas>
+          <div class="qr-scan-line"></div>
+        </div>
+        <span class="qr-caption">Scan QR dengan kamera HP</span>
+      </div>
+
+      <!-- Tab Panel: Bluetooth -->
+      <div id="panel-bluetooth" class="tab-panel">
+        <div class="bluetooth-card">
+          <div class="bt-icon-wrapper">
+            <div class="bt-pulse-ring"></div>
+            <div class="bt-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div class="bt-host-info">
+            <span class="bt-label">Nama Perangkat Host</span>
+            <span id="bt-host-name" class="bt-name">Presentation Host</span>
+          </div>
+          <div class="bt-instructions">
+            <div class="bt-step">
+              <span class="step-num">1</span>
+              <span>Aktifkan Bluetooth di HP</span>
+            </div>
+            <div class="bt-step">
+              <span class="step-num">2</span>
+              <span>Sambungkan ke nama laptop ini</span>
+            </div>
+          </div>
+          <button id="btn-open-bt" class="btn-bt-settings">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span>Buka Bluetooth Windows</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Connected Session View -->
+      <div id="panel-connected" class="connected-card">
+        <div class="success-icon-wrapper">
+          <div class="success-pulse-ring"></div>
+          <div class="success-icon-circle">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="connected-info">
+          <span class="connected-title">HP Berhasil Terhubung!</span>
+          <span class="connected-subtitle">Mode remote presentasi aktif</span>
+        </div>
+        <div class="auto-minimize-bar-wrap">
+          <div id="auto-minimize-bar" class="auto-minimize-bar"></div>
+        </div>
+        <span class="minimize-hint">Menyembunyikan jendela ke background...</span>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
