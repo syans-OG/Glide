@@ -13,7 +13,7 @@
 
 <br/>
 
-<img src="./desktop/public/logo_official.svg" alt="Glide Logo" width="220" />
+<img src="./glide-wordmark.svg" alt="Glide Wordmark" width="650" />
 
 <p align="center">
   <b>Glide</b> turns your phone into a luxurious presentation remote for Windows.<br/>
@@ -130,6 +130,15 @@ Glide/
 ## How It Works
 
 When the desktop app starts, it generates a **random session token**, opens a WebSocket server, and either displays a QR code or a Bluetooth pairing code. The phone must present the correct token in its first message; the server rejects anything else. All messages are lightweight, line-framed JSON — commands like slide change or cursor move are applied locally via Win32 APIs and a canvas overlay, so there is no perceptible lag across a home or office network.
+
+---
+
+## Visual Identity and Brand System
+
+| Mark | File | Preview |
+| :--- | :--- | :---: |
+| **Wordmark** | [`glide-wordmark.svg`](./glide-wordmark.svg) | Origami aero glider with a laser beacon + "Glide." lockup |
+| **App & Tray Icon** | [`logo_official.svg`](./desktop/public/logo_official.svg) | Squircle icon — clean silicon billet glider on a deep OLED gradient |
 
 ---
 
