@@ -42,3 +42,7 @@ desktop.ini
 # Dev/scratch artifacts not meant to ship
 desktop/scripts/test.png
 desktop/scripts/icon_render.html
+
+# Internal planning docs (keep local, never publish)
+BLUETOOTH_PLAN.md
+ROADMAP.md
