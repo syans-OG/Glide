@@ -13,7 +13,7 @@
 
 <br/>
 
-<img src="./glide-wordmark.svg" alt="Glide Wordmark" width="480" />
+<img src="./glide-wordmark.svg" alt="Glide Wordmark" width="560" />
 
 <p align="center">
   <b>Glide</b> turns your phone into a luxurious presentation remote for Windows.<br/>
