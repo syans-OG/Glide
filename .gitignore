@@ -12,6 +12,10 @@ desktop/dist/
 target/
 desktop/src-tauri/target/
 
+# Android local SDK paths (machine-specific, never commit)
+local.properties
+mobile/android/local.properties
+
 # Flutter / Mobile Build Artifacts & Temporary files
 .dart_tool/
 .flutter-plugins
@@ -34,3 +38,7 @@ mobile/flutter_*.png
 Thumbs.db
 desktop.ini
 *.log
+
+# Dev/scratch artifacts not meant to ship
+desktop/scripts/test.png
+desktop/scripts/icon_render.html

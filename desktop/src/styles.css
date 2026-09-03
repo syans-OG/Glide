@@ -353,112 +353,108 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 4px 2px;
-  gap: 8px;
+  gap: 14px;
 }
 
 .bt-icon-wrapper {
-  position: relative;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2px;
-}
-
-.bt-pulse-ring {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid var(--accent-indigo);
-  opacity: 0.3;
-  animation: btPulse 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
-}
-
-@keyframes btPulse {
-  0% { transform: scale(0.85); opacity: 0.6; }
-  100% { transform: scale(1.35); opacity: 0; }
 }
 
 .bt-icon-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #0A84FF, #5E5CE6);
-  color: #FFFFFF;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-blue);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(94, 92, 230, 0.35);
 }
 
 .bt-host-info {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
 }
 
 .bt-label {
   font-size: 9.5px;
   color: var(--text-tertiary);
   font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .bt-name {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+}
+
+.bt-status {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .bt-instructions {
   width: 100%;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 9px;
-  padding: 8px 10px;
+  border-radius: 12px;
+  padding: 11px 14px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 9px;
 }
 
 .bt-step {
   display: flex;
-  align-items: center;
-  gap: 7px;
+  align-items: flex-start;
+  gap: 9px;
   font-size: 11px;
+  line-height: 1.45;
   color: var(--text-secondary);
   text-align: left;
 }
 
-.step-num {
-  width: 16px;
-  height: 16px;
+.bt-step b {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  user-select: all;
+  font-family: var(--font-mono);
+}
+
+.step-dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent-blue);
-  color: #FFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 9.5px;
-  font-weight: 700;
+  margin-top: 5px;
   flex-shrink: 0;
 }
 
 .btn-bt-settings {
   width: 100%;
   border: 1px solid var(--border-subtle);
-  border-radius: 9px;
-  padding: 7px 10px;
+  border-radius: 12px;
+  padding: 9px 10px;
   font-size: 11px;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   cursor: pointer;
   background: var(--bg-surface);
   color: var(--text-primary);
@@ -472,7 +468,7 @@ body {
 }
 
 .btn-bt-settings:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 /* Connected State Card */

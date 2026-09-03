@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../theme/app_theme.dart';
 
 class TimerWidget extends StatefulWidget {
@@ -17,9 +18,11 @@ class TimerWidget extends StatefulWidget {
 
 class _TimerWidgetState extends State<TimerWidget> {
   int _secondsElapsed = 0;
-  final int _targetMinutes = 15;
+  int _targetMinutes = 15;
   bool _isRunning = false;
   Timer? _timer;
+
+  static const List<int> _presetMinutes = [5, 10, 15, 20, 30, 45, 60];
 
   @override
   void dispose() {
@@ -42,6 +45,25 @@ class _TimerWidgetState extends State<TimerWidget> {
         _timer?.cancel();
       }
     });
+  }
+
+  void _cycleDurationPreset() {
+    HapticFeedback.selectionClick();
+    setState(() {
+      final currentIndex = _presetMinutes.indexOf(_targetMinutes);
+      final nextIndex = (currentIndex + 1) % _presetMinutes.length;
+      _targetMinutes = _presetMinutes[nextIndex];
+    });
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Target Presentasi: $_targetMinutes Menit ⏱️'),
+        duration: const Duration(milliseconds: 1000),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
   }
 
   void _resetTimer() {
@@ -99,8 +121,7 @@ class _TimerWidgetState extends State<TimerWidget> {
           const SizedBox(width: 4),
           Text(
             _formatTime(_secondsElapsed),
-            style: TextStyle(
-              fontFamily: 'JetBrains Mono',
+            style: GoogleFonts.jetBrainsMono(
               fontSize: 12,
               fontWeight: FontWeight.w700,
               color: timerColor,
@@ -120,30 +141,13 @@ class _TimerWidgetState extends State<TimerWidget> {
       ),
     );
 
-    if (widget.isInline) {
-      return GestureDetector(
-        onTap: _toggleTimer,
-        onLongPress: _resetTimer,
-        behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-          child: content,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: _toggleTimer,
-      onLongPress: _resetTimer,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.darkSurfaceAlt : AppColors.lightSurfaceAlt,
-          borderRadius: BorderRadius.circular(100),
-          border: Border.all(
-            color: _isRunning ? timerColor.withValues(alpha: 0.5) : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
-          ),
-        ),
+      onLongPress: _cycleDurationPreset,
+      onDoubleTap: _resetTimer,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
         child: content,
       ),
     );

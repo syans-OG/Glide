@@ -94,6 +94,8 @@ pub fn simulate_mouse_click(button: &str) {
         "MIDDLE" => (MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP),
         "DOUBLE" => {
             simulate_mouse_click("LEFT");
+            // Use a short thread sleep for the double-click delay
+            // This is acceptable since it's a one-off 50ms delay
             std::thread::sleep(std::time::Duration::from_millis(50));
             simulate_mouse_click("LEFT");
             return;
@@ -146,7 +148,7 @@ pub fn simulate_mouse_scroll(dy: i32) {
                 mi: MOUSEINPUT {
                     dx: 0,
                     dy: 0,
-                    mouseData: (dy * (WHEEL_DELTA as i32 / 3)) as u32,
+                    mouseData: (dy * (WHEEL_DELTA / 3)) as u32,
                     dwFlags: MOUSEEVENTF_WHEEL,
                     time: 0,
                     dwExtraInfo: 0,

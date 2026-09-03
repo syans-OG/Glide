@@ -243,6 +243,7 @@ class _TouchpadWidgetState extends State<TouchpadWidget> with SingleTickerProvid
                         isThreeFinger: isThreeFinger,
                         isLaserActive: widget.isLaserActive,
                         laserMode: widget.laserMode,
+                        laserPos: widget.isLaserActive ? Offset(_laserNormalizedX, _laserNormalizedY) : null,
                       ),
                     );
                   },
@@ -265,6 +266,7 @@ class _KineticPhotonMatrixPainter extends CustomPainter {
   final bool isThreeFinger;
   final bool isLaserActive;
   final String laserMode;
+  final Offset? laserPos;
 
   _KineticPhotonMatrixPainter({
     required this.activePointers,
@@ -274,6 +276,7 @@ class _KineticPhotonMatrixPainter extends CustomPainter {
     required this.isThreeFinger,
     required this.isLaserActive,
     required this.laserMode,
+    this.laserPos,
   });
 
   @override
@@ -288,7 +291,7 @@ class _KineticPhotonMatrixPainter extends CustomPainter {
     } else if (isScrolling) {
       primaryAccent = const Color(0xFF30D158);
     } else {
-      primaryAccent = const Color(0xFF00F2FE);
+      primaryAccent = AppColors.accentBlue;
     }
 
     const spacing = 20.0;
@@ -323,7 +326,7 @@ class _KineticPhotonMatrixPainter extends CustomPainter {
 
         // Calculate dot radius & illumination
         final currentRadius = baseRadius + (maxProximity * 3.4) + (waveBoost * 1.5);
-        final baseOpacity = isDark ? 0.035 : 0.04;
+        final baseOpacity = isDark ? 0.065 : 0.06;
 
         Color dotColor;
         if (maxProximity > 0.05 || waveBoost > 0.05) {
@@ -343,6 +346,32 @@ class _KineticPhotonMatrixPainter extends CustomPainter {
 
         canvas.drawCircle(dotPos, currentRadius, paint);
       }
+    }
+
+    // Draw Laser Target Beacon if active
+    if (isLaserActive && laserPos != null) {
+      final target = Offset(laserPos!.dx * size.width, laserPos!.dy * size.height);
+      final isSpot = laserMode == 'spotlight';
+      final laserColor = isSpot ? const Color(0xFFFF9F0A) : const Color(0xFFFF3B30);
+
+      // Outer Halo
+      final haloPaint = Paint()
+        ..color = laserColor.withValues(alpha: 0.18 + (math.sin(waveProgress * math.pi * 2) * 0.06))
+        ..style = PaintingStyle.fill;
+      canvas.drawCircle(target, isSpot ? 36.0 : 20.0, haloPaint);
+
+      // Stroke Reticle
+      final ringPaint = Paint()
+        ..color = laserColor.withValues(alpha: 0.8)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5;
+      canvas.drawCircle(target, isSpot ? 24.0 : 12.0, ringPaint);
+
+      // Core Dot
+      final corePaint = Paint()
+        ..color = laserColor
+        ..style = PaintingStyle.fill;
+      canvas.drawCircle(target, isSpot ? 5.0 : 3.5, corePaint);
     }
   }
 

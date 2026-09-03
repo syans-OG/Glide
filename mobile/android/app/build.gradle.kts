@@ -23,7 +23,8 @@ android {
         applicationId = "com.presentation.presentation_mobile"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // bluetooth_serial_android requires minSdk 26+ (Android 8.0).
+        minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

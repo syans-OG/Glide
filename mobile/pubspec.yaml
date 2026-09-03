@@ -31,14 +31,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
   web_socket_channel: ^3.0.1
   sensors_plus: ^6.1.1
   google_fonts: ^6.2.1
   mobile_scanner: ^6.0.4
-
-dependency_overrides:
-  path_provider_android: 2.2.15
+  bluetooth_serial_android: ^1.1.2
+  shared_preferences: ^2.5.0
 
 dev_dependencies:
   flutter_test:

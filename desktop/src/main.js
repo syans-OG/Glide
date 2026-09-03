@@ -25,22 +25,27 @@ winMinimize?.addEventListener('click', () => {
 });
 
 winClose?.addEventListener('click', () => {
-  appWindow.close();
+  // Exit the whole app (main + overlay windows + background servers) so the
+  // process/terminal terminates, not just the main window.
+  invoke('exit_app').catch((err) => {
+    console.error('exit_app failed:', err);
+    appWindow.close();
+  });
 });
 
 // Tab Switcher
-tabWifi.addEventListener('click', () => {
+tabWifi?.addEventListener('click', () => {
   tabWifi.classList.add('active');
-  tabBluetooth.classList.remove('active');
-  panelWifi.classList.add('active');
-  panelBluetooth.classList.remove('active');
+  tabBluetooth?.classList.remove('active');
+  panelWifi?.classList.add('active');
+  panelBluetooth?.classList.remove('active');
 });
 
-tabBluetooth.addEventListener('click', () => {
+tabBluetooth?.addEventListener('click', () => {
   tabBluetooth.classList.add('active');
-  tabWifi.classList.remove('active');
-  panelBluetooth.classList.add('active');
-  panelWifi.classList.remove('active');
+  tabWifi?.classList.remove('active');
+  panelBluetooth?.classList.add('active');
+  panelWifi?.classList.remove('active');
 });
 
 // Open Bluetooth Windows Settings
@@ -54,10 +59,43 @@ btnOpenBt?.addEventListener('click', async () => {
 
 // Theme Switcher
 let isDark = true;
-themeToggle.addEventListener('click', () => {
+themeToggle?.addEventListener('click', () => {
   isDark = !isDark;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
 });
+
+// Server error display
+let errorOverlay = null;
+
+function showServerError(message) {
+  if (errorOverlay) return;
+  errorOverlay = document.createElement('div');
+  errorOverlay.style.cssText = `
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85); display: flex; align-items: center;
+    justify-content: center; z-index: 9999; padding: 20px;
+  `;
+  errorOverlay.innerHTML = `
+    <div style="background: #1a1a2e; border: 1px solid #ff3b3b; border-radius: 16px;
+      padding: 24px; text-align: center; max-width: 300px;">
+      <div style="font-size: 32px; margin-bottom: 12px;">⚠️</div>
+      <div style="color: #ff3b3b; font-weight: 700; font-size: 14px; margin-bottom: 8px;">
+        Server Error
+      </div>
+      <div style="color: #888; font-size: 12px; margin-bottom: 16px;">
+        ${message.includes('address already in use')
+          ? 'Port 8765 sudah digunakan. Tutup aplikasi Glide lain atau restart komputer.'
+          : message}
+      </div>
+      <button onclick="this.parentElement.parentElement.remove(); window.__errorOverlay = null;"
+        style="background: #ff3b3b; color: white; border: none; padding: 8px 20px;
+          border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px;">
+        Tutup
+      </button>
+    </div>
+  `;
+  document.body.appendChild(errorOverlay);
+}
 
 // Initialize Host Info & Render QR Code
 async function initHostInfo() {
@@ -67,11 +105,19 @@ async function initHostInfo() {
       btHostName.textContent = info.hostname;
     }
 
-    // Generate Standard Clean QR Code
+    // Auth token comes from the command (exact token the servers enforce).
+    const authToken = info.token || window.__AUTH_TOKEN || '';
+    const tokenEl = document.getElementById('auth-token-text');
+    if (tokenEl) tokenEl.textContent = authToken || '(tidak ada)';
+    const btCodeEl = document.getElementById('bt-code-text');
+    if (btCodeEl) btCodeEl.textContent = info.bt_code || '(tidak ada)';
+
+    // Generate Standard Clean QR Code with auth token
     const payload = JSON.stringify({
       ip: info.ip,
       port: info.port,
       ws: info.ws_url,
+      token: authToken,
     });
 
     await QRCode.toCanvas(qrcodeCanvas, payload, {
@@ -134,7 +180,7 @@ listen('device-status', async (event) => {
     // DISCONNECTED: Restore & Focus Window Automatically!
     clearTimeout(minimizeTimeout);
     if (autoMinimizeBar) autoMinimizeBar.style.width = '0%';
-    
+
     statusDot.className = 'status-dot';
     statusText.textContent = 'Menunggu HP terhubung...';
 
@@ -159,6 +205,25 @@ listen('device-status', async (event) => {
       }
     }
   }
+});
+
+// Listen to Bluetooth adapter status events from Rust
+const btStatus = document.getElementById('bt-status');
+listen('bluetooth-status', (event) => {
+  const data = event.payload || {};
+  if (!btStatus) return;
+  if (data.error) {
+    btStatus.textContent = 'Bluetooth tidak tersedia di perangkat ini';
+  } else if (data.connected) {
+    btStatus.textContent = 'Terhubung via Bluetooth';
+  } else {
+    btStatus.textContent = 'Bluetooth siap — sambungkan dari HP';
+  }
+});
+
+// Listen to server errors
+listen('server-error', (event) => {
+  showServerError(event.payload);
 });
 
 initHostInfo();

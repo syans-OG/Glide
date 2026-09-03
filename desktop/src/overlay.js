@@ -5,12 +5,16 @@ const ctx = canvas.getContext('2d');
 
 let width = window.innerWidth;
 let height = window.innerHeight;
+let animationActive = false;
+let hideTimeout = null;
 
 function resizeCanvas() {
   width = window.innerWidth;
   height = window.innerHeight;
   canvas.width = width * window.devicePixelRatio;
   canvas.height = height * window.devicePixelRatio;
+  // Reset transform before applying DPI scale to prevent cumulative scaling
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 }
 
@@ -40,6 +44,12 @@ listen('pointer-event', (event) => {
   const data = event.payload;
   if (!data.active) {
     targetState.active = false;
+    // Start fade-out animation if not already running
+    if (!animationActive) {
+      animationActive = true;
+      clearTimeout(hideTimeout);
+      renderLoop();
+    }
     return;
   }
 
@@ -48,9 +58,16 @@ listen('pointer-event', (event) => {
   targetState.y = data.y * height;
   targetState.mode = data.mode || 'laser';
   targetState.radius = data.radius || 120;
+
+  // Start animation loop if not running
+  if (!animationActive) {
+    animationActive = true;
+    clearTimeout(hideTimeout);
+    renderLoop();
+  }
 });
 
-// 60fps Animation Loop with Fluid Easing (Apple/Emil Kowalski Standard)
+// 60fps Animation Loop with Fluid Easing
 function renderLoop() {
   ctx.clearRect(0, 0, width, height);
 
@@ -69,9 +86,13 @@ function renderLoop() {
     } else {
       renderLaser(currentPos.x, currentPos.y, currentPos.opacity);
     }
+    requestAnimationFrame(renderLoop);
+  } else {
+    // Fully faded out — stop animation loop
+    animationActive = false;
+    trailHistory.length = 0;
+    ctx.clearRect(0, 0, width, height);
   }
-
-  requestAnimationFrame(renderLoop);
 }
 
 function renderLaser(x, y, opacity) {
@@ -137,5 +158,3 @@ function renderSpotlight(x, y, radius, opacity) {
 
   ctx.restore();
 }
-
-renderLoop();
