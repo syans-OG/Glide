@@ -1,47 +1,35 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
+
+Security fixes are provided for the latest published Glide release.
 
 | Version | Supported          |
 | ------- | ------------------ |
 | 1.0.x   | :white_check_mark: |
+| < 1.0.0 | :x:                |
 
-Only the latest release on the `main` branch receives security updates.
+---
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-If you discover a security vulnerability, please **do not** open a public issue.
+Please report vulnerabilities privately through GitHub Security Advisories:
 
-Instead, report it privately:
+1. Open the repository's **Security** tab.
+2. Select **Advisories** and **Report a vulnerability**.
+3. Include affected versions, reproduction steps, impact, and any suggested mitigation.
 
-- **Email:** 123starsquad@gmail.com
-- **Subject:** `[Glide Security] <brief description>`
+Do not disclose an unpatched vulnerability in a public issue or discussion. Please do not include private tokens, pairing codes, personal paths, or sensitive data in a report.
 
-Please include:
+Reports concerning session token authentication bypass, WebSocket/RFCOMM transport injection, input simulation abuse, local network exposure, QR pairing interception, or Tauri CSP bypasses are especially helpful.
 
-- A clear description of the vulnerability and its impact
-- Steps to reproduce (PoC, logs, or screenshots if applicable)
-- Affected component (`desktop` / `mobile` / `transport` / `auth`) and version/commit
+---
 
-You can expect:
+## Scope notes
 
-- **Acknowledgement** within 72 hours
-- **Assessment and fix timeline** within 7 days for confirmed issues
-- **Coordinated disclosure** — we will credit you in the fix notes if you wish, unless you prefer to remain anonymous
+Glide is a 100% offline, peer-to-peer presentation remote for Windows + Android:
 
-## Security Considerations
-
-Glide is an **offline, peer-to-peer** remote. It has no cloud account, no central server, and no data collection.
-
-- **Session authentication:** the desktop app generates a random per-session token at startup and embeds it in the QR/Bluetooth handshake. The server rejects any WebSocket/RFCOMM connection that does not present the correct token in its first message.
-- **Local network only:** the desktop WebSocket server binds to the local network, and Bluetooth Classic (SPP) is device-to-device. No traffic leaves your devices.
-- **Least-privilege Tauri capabilities:** frontend-to-Rust IPC is restricted to the declared capabilities in `desktop/src-tauri/capabilities/`, and the webview CSP is locked to `self`.
-- **No secrets in repository:** no API keys, tokens, or keystores are committed. All auth material is ephemeral and generated at runtime.
-
-If you are deploying Glide in an untrusted network environment, treat the LAN as the trust boundary and keep the QR/pairing code private for the duration of the session (it rotates on every app restart).
-
-## Disclosure Policy
-
-We follow coordinated disclosure. Once a fix is available, we will publish a GitHub Security Advisory and a patched release. Please allow us time to prepare the fix before any public disclosure.
-
-Thank you for helping keep Glide and its users safe.
+- **No Telemetry or Analytics:** Glide does not collect, store, or transmit your presentation data, keystrokes, or control inputs.
+- **No Hosted Accounts or Cloud Database:** All communication is direct between your laptop and phone over local Wi-Fi (WebSocket) or Bluetooth Classic (SPP). Session tokens are random per launch and never leave your devices.
+- **System Permissions:** Low-level OS access is limited to cursor movement and simulated keystrokes for presentation control (`SendInput`) and a canvas overlay for the laser pointer.
+- Third-party model providers, upstream Tauri/Flutter changes, and Windows/Android platform policy updates are outside the project's direct control.
