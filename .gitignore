@@ -43,6 +43,9 @@ desktop.ini
 desktop/scripts/test.png
 desktop/scripts/icon_render.html
 
+# Local build outputs (regenerable, uploaded to GitHub Releases instead)
+installers/
+
 # Internal planning docs (keep local, never publish)
 BLUETOOTH_PLAN.md
 ROADMAP.md
